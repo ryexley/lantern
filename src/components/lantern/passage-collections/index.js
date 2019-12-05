@@ -8,13 +8,39 @@ import { Card } from "#/components/ui/card"
 import { BibleService } from "#/services/bible"
 
 const styles = css`
-  .collectionCard {}
+  .collectionsContainer {
+    align-items: center;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    overflow: hidden;
+    width: 100vw;
+  }
+
+  .collectionCard {
+    width: 18.75rem;
+
+    a {
+      display: block;
+      text-decoration: none;
+      width: 100%;
+
+      p {
+        color: var(--theme--color-text);
+      }
+    }
+  }
+
+  .collectionName {
+    text-transform: capitalize;
+  }
 `
 
 const renderCollectionCard = collection => (
   <Card>
     <Link to={`/lantern/passages/${collection.slug}`}>
-      { collection.name }
+      <h2 className={styles.collectionName}>{ collection.name }</h2>
+      <p>{ collection.description }</p>
     </Link>
   </Card>
 )
@@ -43,11 +69,10 @@ export const PassageCollections = () => {
   }, [])
 
   return (
-    <>
-      <HeadContent title="Home" />
+    <section className={styles.collectionsContainer}>
+      <HeadContent title="Choose a Bible Passage Collection" />
       { !biblePassageCollectionsLoaded ? <LoadingIndicator /> : null }
       { biblePassageCollectionsLoaded && renderPassageCollections(biblePassageCollections) }
-      {/* <Link to="/page-2/">Go to page 2</Link> */}
-    </>
+    </section>
   )
 }

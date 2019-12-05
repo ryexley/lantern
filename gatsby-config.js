@@ -40,7 +40,13 @@ module.exports = {
         ]
       }
     },
-    "gatsby-plugin-astroturf"
+    "gatsby-plugin-astroturf",
+    {
+      resolve: "gatsby-plugin-create-client-paths",
+      options: {
+        prefixes: ["/lantern/*"]
+      }
+    }
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,

@@ -18,6 +18,7 @@ const styles = css`
     --typography--line-height: 1.6;
     --typography--leading: calc(var(--typography--base-font-size) * var(--typography--line-height));
     --theme--color-base: #9f0;
+    --theme--color-border: #ccc;
   }
 
   * {

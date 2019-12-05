@@ -14,12 +14,15 @@
     "lint:fix": "yarn run lint --fix"
   },
   "dependencies": {
+    "@reach/router": "^1.2.1",
     "astroturf": "^0.9.21",
     "axios": "^0.19.0",
     "babel-plugin-module-resolver": "^3.2.0",
+    "classnames": "^2.2.6",
     "gatsby": "^2.18.4",
     "gatsby-image": "^2.2.34",
     "gatsby-plugin-astroturf": "^0.2.1",
+    "gatsby-plugin-create-client-paths": "^2.1.18",
     "gatsby-plugin-manifest": "^2.2.30",
     "gatsby-plugin-offline": "^3.0.24",
     "gatsby-plugin-postcss": "^2.1.16",

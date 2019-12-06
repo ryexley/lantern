@@ -1,7 +1,7 @@
 {
-  "name": "breadfruit",
-  "description": "a bible scripture app",
-  "version": "0.1.0",
+  "name": "lantern",
+  "description": "Your word is a lamp unto my feet and a light unto my path. Psalm 119:105",
+  "version": "0.0.1",
   "author": "Bob Yexley <bob@yexley.net>",
   "scripts": {
     "build": "gatsby build",

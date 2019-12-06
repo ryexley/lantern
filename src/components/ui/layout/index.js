@@ -21,7 +21,7 @@ const styles = css`
     --typography--leading: calc(var(--typography--base-font-size) * var(--typography--line-height));
     --theme--color-border: #eee;
     --theme--color-link: #c06;
-    --theme--color-link--hover: #f30;
+    --theme--color-link--hover: #606;
     --theme--color-text: #444;
   }
 

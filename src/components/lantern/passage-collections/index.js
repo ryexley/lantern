@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
 import { Link } from "gatsby"
 import { css } from "astroturf"
 import { HeadContent } from "#/components/ui/head-content"
@@ -6,6 +7,8 @@ import { LoadingIndicator } from "#/components/ui/loading-indicator"
 import { List } from "#/components/ui/list"
 import { Card } from "#/components/ui/card"
 import { BibleService } from "#/services/bible"
+import { beginFetchCollectionList, setCollectionList, fetchCollectionListFailed } from "#/store/actions/bible"
+import { isNotEmpty } from "#/util"
 
 const styles = css`
   .collectionsContainer {
@@ -36,6 +39,8 @@ const styles = css`
   }
 `
 
+const renderLoading = () => <LoadingIndicator label="Loading Collections" />
+
 const renderCollectionCard = collection => (
   <Card>
     <Link to={`/lantern/passages/${collection.slug}`}>
@@ -52,17 +57,30 @@ const renderPassageCollections = passageCollections => (
     itemClass={styles.collectionCard} />
 )
 
+const renderError = () => (
+  <h2>Oops. Something went wrong, sorry about that.</h2>
+)
+
 export const PassageCollections = () => {
+  const dispatch = useDispatch()
   const bible = new BibleService()
 
-  const [biblePassageCollections, setBiblePassageCollections] = useState([])
-  const biblePassageCollectionsLoaded = biblePassageCollections.length > 0
+  const {
+    loading,
+    data: passageCollections,
+    error
+  } = useSelector(state => state.bible.passageCollections)
 
   useEffect(() => {
     const fetchBiblePassageCollections = async () => {
-      const collections = await bible.getCollections()
+      try {
+        dispatch(beginFetchCollectionList())
+        const collections = await bible.getCollections()
 
-      setBiblePassageCollections(collections)
+        dispatch(setCollectionList(collections))
+      } catch (err) {
+        dispatch(fetchCollectionListFailed(err))
+      }
     }
 
     fetchBiblePassageCollections()
@@ -71,8 +89,9 @@ export const PassageCollections = () => {
   return (
     <section className={styles.collectionsContainer}>
       <HeadContent title="Choose a Bible Passage Collection" />
-      { !biblePassageCollectionsLoaded ? <LoadingIndicator /> : null }
-      { biblePassageCollectionsLoaded && renderPassageCollections(biblePassageCollections) }
+      { loading ? renderLoading() : null }
+      { !loading && renderPassageCollections(passageCollections) }
+      { isNotEmpty(error) && renderError() }
     </section>
   )
 }

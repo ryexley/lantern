@@ -7,8 +7,12 @@ import { LoadingIndicator } from "#/components/ui/loading-indicator"
 import { List } from "#/components/ui/list"
 import { Card } from "#/components/ui/card"
 import { BibleService } from "#/services/bible"
-import { beginFetchCollectionList, setCollectionList, fetchCollectionListFailed } from "#/store/actions/bible"
 import { isNotEmpty } from "#/util"
+import {
+  beginFetchCollectionList,
+  setCollectionList,
+  fetchCollectionListFailed
+} from "#/store/actions/bible"
 
 const styles = css`
   .collectionsContainer {

@@ -37,3 +37,10 @@ export function fetchCollectionFailed(error) {
     error
   }
 }
+
+export function initPassageRotation(passages) {
+  return {
+    type: "bible:passageRotation:init",
+    passages
+  }
+}

@@ -48,6 +48,7 @@ const styles = css`
 
   .label {
     margin: 0;
+    text-transform: capitalize;
   }
 
   .visible {

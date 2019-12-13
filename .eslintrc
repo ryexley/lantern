@@ -1,0 +1,48 @@
+{
+  "root": true,
+  "env": {
+    "node": true
+  },
+  "extends": [
+    "plugin:vue/essential",
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "parser": "babel-eslint"
+  },
+  "rules": {
+    "indent": [
+      "error",
+      2
+    ],
+    "quotes": [
+      "error",
+      "double"
+    ],
+    "semi": [
+      "error",
+      "never"
+    ],
+    "require-jsdoc": [
+      "off"
+    ],
+    "lines-around-comment": [
+      "off"
+    ],
+    "func-style": [
+      "error",
+      "declaration",
+      { "allowArrowFunctions": true }
+    ],
+    "no-console": [
+      "warn"
+    ],
+    "space-before-function-paren": [
+      "error", {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ]
+  },
+}

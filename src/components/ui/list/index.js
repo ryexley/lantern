@@ -17,8 +17,8 @@ const styles = css`
   }
 `
 
-export const List = ({ items, renderItem, itemClass }) => (
-  <ul className={styles.list}>
+export const List = ({ items, renderItem, listClass, itemClass }) => (
+  <ul className={classNames(styles.list, listClass)}>
     { items.map((item, index) => (
       <li className={classNames(styles.listItem, itemClass)} key={`list-item-${index}`}>
         { renderItem(item) }
@@ -30,5 +30,6 @@ export const List = ({ items, renderItem, itemClass }) => (
 List.propTypes = {
   items: PropTypes.array.isRequired,
   renderItem: PropTypes.func.isRequired,
+  listClass: PropTypes.string,
   itemClass: PropTypes.string
 }

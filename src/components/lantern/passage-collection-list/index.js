@@ -24,6 +24,11 @@ const styles = css`
     width: 100vw;
   }
 
+  .collectionList {
+    justify-content: center;
+    margin: 2rem;
+  }
+
   .collectionCard {
     width: 18.75rem;
 
@@ -58,6 +63,7 @@ const renderPassageCollections = passageCollections => (
   <List
     items={passageCollections}
     renderItem={renderCollectionCard}
+    listClass={styles.collectionList}
     itemClass={styles.collectionCard} />
 )
 
@@ -65,7 +71,7 @@ const renderError = () => (
   <h2>Oops. Something went wrong, sorry about that.</h2>
 )
 
-export const PassageCollections = () => {
+export const PassageCollectionList = () => {
   const dispatch = useDispatch()
   const bible = new BibleService()
 

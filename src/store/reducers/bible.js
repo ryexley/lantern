@@ -14,6 +14,7 @@ export const bible = reducer({
     },
     passageRotation: {
       currentIndex: 0,
+      currentPassage: {},
       passages: []
     }
   },
@@ -89,11 +90,47 @@ export const bible = reducer({
     },
 
     "bible:passageRotation:init"(state, { passages }) {
+      const currentIndex = 0
+      const currentPassage = passages[currentIndex]
+
       return {
         ...state,
         passageRotation: {
-          currentIndex: 0,
+          currentIndex,
+          currentPassage,
           passages
+        }
+      }
+    },
+
+    "bible:passageRotation:currentPassage:fetchSuccess"(state, { passage }) {
+      const { passageRotation } = state
+
+      return {
+        ...state,
+        passageRotation: {
+          ...passageRotation,
+          currentPassage: {
+            loading: false,
+            data: passage,
+            error: null
+          }
+        }
+      }
+    },
+
+    "bible:passageRotation:currentPassage:fetchFailed"(state, { error }) {
+      const { passageRotation } = state
+
+      return {
+        ...state,
+        passageRotation: {
+          ...passageRotation,
+          currentPassage: {
+            loading: false,
+            data: null,
+            error
+          }
         }
       }
     }

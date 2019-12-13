@@ -44,3 +44,17 @@ export function initPassageRotation(passages) {
     passages
   }
 }
+
+export function setCurrentPassage(passage) {
+  return {
+    type: "bible:passageRotation:currentPassage:fetchSuccess",
+    passage
+  }
+}
+
+export function fetchCurrentPassageFailed(error) {
+  return {
+    type: "",
+    error
+  }
+}

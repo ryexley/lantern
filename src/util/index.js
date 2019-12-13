@@ -5,7 +5,8 @@ export const isEmpty = target => {
 
   return typeof target === "undefined" ||
     target === null ||
-    target === ""
+    target === "" ||
+    Object.entries(target).length === 0
 }
 
 export const isNotEmpty = target => (!isEmpty(target))

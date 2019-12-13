@@ -1,8 +1,7 @@
-import React, { createRef, useState } from "react"
+import React from "react"
 import PropTypes from "prop-types"
 import { CountdownCircleTimer } from "react-countdown-circle-timer"
 import { css } from "astroturf"
-import { useInterval } from "#/hooks/use-interval"
 
 const styles = css`
 `

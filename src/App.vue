@@ -1,8 +1,7 @@
 <template>
-  <div id="app">
-    <h1>Lantern</h1>
-    <h3>Your word is a lamp to my feet and a light to my path. - Psalm 119:105</h3>
-  </div>
+  <main>
+    <router-view></router-view>
+  </main>
 </template>
 
 <script>
@@ -12,12 +11,51 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  @import url("https://fonts.googleapis.com/css?family=Baskervville|Raleway&display=swap");
+
+  :root {
+    --typography--base-font-family: Baskervville, serif;
+    --typography--alt-font-family: Raleway, sans-serif;
+    --typography--base-font-size: 16px;
+    --typography--line-height: 1.6;
+    --typography--leading: calc(var(--typography--base-font-size) * var(--typography--line-height));
+    --theme--color-border: #eee;
+    --theme--color-link: #c06;
+    --theme--color-link--hover: #606;
+    --theme--color-text: #444;
+  }
+
+  * {
+    line-height: var(--typography--leading);
+  }
+
+  body {
+    color: var(--theme--color-text);
+    font-family: var(--typography--base-font-family);
+    margin: 0;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--typography--base-font-family);
+  }
+
+  a {
+    color: var(--theme--color-link);
+    transition: color 250ms ease-in-out;
+  }
+
+  a:hover {
+    color: var(--theme--color-link--hover);
+  }
+
+  main {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+  }
 </style>

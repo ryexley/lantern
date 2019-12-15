@@ -9,7 +9,7 @@ export class BibleService {
 
       return results.data
     } catch (error) {
-      console.error(error)
+      // console.error(error)
       return []
     }
   }
@@ -20,7 +20,7 @@ export class BibleService {
 
       return results.data
     } catch (error) {
-      console.error(error)
+      // console.error(error)
       return null
     }
   }
@@ -39,7 +39,7 @@ export class BibleService {
         passageText
       }
     } catch (error) {
-      console.error(error)
+      // console.error(error)
       return null
     }
   }

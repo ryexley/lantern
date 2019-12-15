@@ -9,7 +9,8 @@
   "views": {
     "home": {
       "HEADING": "Lantern",
-      "SUB-HEADING": "Your word is a lamp to my feet and a light to my path. - Psalm 119:105"
+      "SUB-HEADING": "Your word is a lamp to my feet and a light to my path. - Psalm 119:105",
+      "COLLECTIONS_LOADING_TEXT": "Loading Passage Collections"
     }
   }
 }

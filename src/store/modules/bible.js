@@ -5,7 +5,7 @@ export function BibleModule({ bibleServiceFactory }) {
     data: {
       passageCollections: {
         loaded: false,
-        data: null,
+        data: [],
         error: null
       }
     }
@@ -39,7 +39,6 @@ export function BibleModule({ bibleServiceFactory }) {
 
         commit("setPassageCollections", collections)
       }
-    },
-    getters: {}
+    }
   }
 }

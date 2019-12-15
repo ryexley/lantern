@@ -29,6 +29,7 @@ export default {
   }
 
   * {
+    box-sizing: border-box;
     line-height: var(--typography--leading);
   }
 

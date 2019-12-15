@@ -1,5 +1,10 @@
 {
   "components": {
+    "lantern": {
+      "passage-rotation": {
+        "PASSAGE_LOADING_TEXT": "Passage Loading"
+      }
+    },
     "ui": {
       "loading-indicator": {
         "DEFAULT_LABEL": "Loading"
@@ -11,6 +16,9 @@
       "HEADING": "Lantern",
       "SUB-HEADING": "Your word is a lamp to my feet and a light to my path. - Psalm 119:105",
       "COLLECTIONS_LOADING_TEXT": "Loading Passage Collections"
+    },
+    "passage-rotator": {
+      "COLLECTION_LOADING_TEXT": "Loading Passage Collection"
     }
   }
 }

@@ -16,7 +16,7 @@ const scrollBehavior = (to, from, savedPosition) => {
 }
 
 const Home = () => import(/* webpackChunkName: "home" */ "@/views/home")
-const Rotate = () => import(/* webpackChunkName: "rotate" */ "@/views/rotate")
+const PassageRotator = () => import(/* webpackChunkName: "passage-rotator" */ "@/views/passage-rotator")
 
 export const router = new VueRouter({
   mode: "history",
@@ -31,7 +31,7 @@ export const router = new VueRouter({
     {
       path: "/collection/:slug",
       name: "collection",
-      component: Rotate
+      component: PassageRotator
     },
     {
       // this route is a catch-all and should always be last

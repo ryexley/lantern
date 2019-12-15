@@ -2,7 +2,8 @@
   "components": {
     "lantern": {
       "passage-rotation": {
-        "PASSAGE_LOADING_TEXT": "Passage Loading"
+        "PASSAGE_LOADING_TEXT": "Passage Loading",
+        "NO_PASSAGES_TEXT": "This collection has no passages. Someone should probably add some."
       }
     },
     "ui": {

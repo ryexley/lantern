@@ -26,6 +26,7 @@ export default {
     --theme--color-link: #c06;
     --theme--color-link--hover: #606;
     --theme--color-text: #444;
+    --theme--color-text--light: #ccc;
   }
 
   * {

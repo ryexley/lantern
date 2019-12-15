@@ -55,6 +55,19 @@ export function BibleModule({ bibleServiceFactory }) {
         }
       },
 
+      clearCurrentPassageCollection(state) {
+        const { data } = state
+
+        state.data = {
+          ...data,
+          currentPassageCollection: {
+            loaded: false,
+            data: {},
+            error: null
+          }
+        }
+      },
+
       initPassageRotation(state, passages) {
         const { data } = state
 
@@ -109,6 +122,10 @@ export function BibleModule({ bibleServiceFactory }) {
 
         commit("setCurrentPassageCollection", collection)
         commit("initPassageRotation", passages)
+      },
+
+      async clearCurrentPassageCollection({ commit }) {
+        commit("clearCurrentPassageCollection")
       },
 
       async fetchCurrentPassage({ state, commit }) {

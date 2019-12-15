@@ -4,9 +4,6 @@ import axios from "axios"
 import { EnvModule } from "@/store/modules/env"
 import { BibleService } from "@/services/bible"
 import { BibleModule } from "@/store/modules/bible"
-import createPersistedState from "vuex-persistedstate"
-
-const STORAGE_KEY = "lantern:data"
 
 const env = new EnvModule()
 const bibleServiceFactory = env => new BibleService({ axios, env })
@@ -33,13 +30,7 @@ export function storeConfigFactory(/* {} */) {
         await dispatch("bible/fetchPassageCollections", {}, { rot: true })
       }
     },
-    plugins: [
-      createPersistedState({
-        key: STORAGE_KEY,
-        storage: window.localStorage,
-        reducer: state => state
-      })
-    ]
+    plugins: []
   }
 }
 

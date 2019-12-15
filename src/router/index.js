@@ -1,5 +1,8 @@
 import Vue from "vue"
 import VueRouter from "vue-router"
+import {
+  onBeforeEnterHome
+} from "@/router/middleware"
 
 Vue.use(VueRouter)
 
@@ -26,7 +29,8 @@ export const router = new VueRouter({
     {
       path: "/",
       name: "home",
-      component: Home
+      component: Home,
+      beforeEnter: onBeforeEnterHome
     },
     {
       path: "/collection/:slug",

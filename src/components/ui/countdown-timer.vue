@@ -1,45 +1,63 @@
 <template>
   <div class="countdown-timer">
-    <svg>
-      <circle :style="circleStyle" r="18" cx="20" cy="20" />
+    <svg :height="size" :width="size">
+      <path
+        fill="none"
+        :stroke="trailColor"
+        :strokeWidth="strokeWidth"
+        :d="getPath()" />
+      <path
+        fill="none"
+        :stroke="progressColor"
+        :strokeWidth="strokeWidth"
+        :strokeLinecap="strokeLineCap"
+        :strokeDasharray="pathTotalLength"
+        :strokeDashoffset="strokeDasharray" />
     </svg>
   </div>
 </template>
 
 <script>
-import { TIME } from "@/enums"
+import VueTypes from "vue-types"
+// import { TIME } from "@/enums"
 
+// bit of a wack attempt at porting this to vue
+// https://github.com/vydimitrov/react-countdown-circle-timer
 export default {
   name: "countdown-timer",
   props: {
-    time: {
-      type: Number,
-      required: true
-    }
-  },
-  mounted() {
-    let countdown = this.time
-
-    this.timerInterval = setInterval(() => {
-      countdown = --countdown
-      if (countdown <= 0) {
-        clearInterval(this.timerInterval)
-
-        this.$emit("timerComplete")
-      }
-    }, TIME.ONE_SECOND)
-  },
-  destroyed() {
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval)
-    }
+    size: VueTypes.number.def(40),
+    strokeWidth: VueTypes.number.def(12),
+    trailColor: VueTypes.string.def("#ccc"),
+    progressColor: VueTypes.string.def("#777"),
+    strokeLineCap: VueTypes.oneOf(["round", "square"]).def("round")
   },
   data: () => ({
-    timerInterval: null
+    pathTotalLength: 0
   }),
   computed: {
-    circleStyle() {
-      return { animationDuration: `${this.time}s` }
+    strokeDasharray() {
+      // return this.linearEase()
+      return 50
+    }
+  },
+  methods: {
+    getPath() {
+      const halfSize = this.size / 2
+      const halfStrokeWidth = this.strokeWidth / 2
+      const arcPathCenter = halfSize - halfStrokeWidth
+      const arcDiameter = arcPathCenter * 2
+
+      return [
+        `m ${halfSize},${halfStrokeWidth}`,
+        `a ${arcPathCenter},${arcPathCenter} 0 1,0 0,${arcDiameter}`,
+        `a ${arcPathCenter},${arcPathCenter} 0 1,0 0,-${arcDiameter}`
+      ].join(" ")
+    },
+    linearEase({ time, start, goal, duration }) {
+      const currentTime = time / duration
+
+      return start + (goal * currentTime)
     }
   }
 }
@@ -47,39 +65,15 @@ export default {
 
 <style>
   .countdown-timer {
-    position: relative;
-    margin: 1.25rem auto;
     height: 2.5rem;
-    text-align: center;
     width: 2.5rem;
 
     & svg {
-      height: 2.5rem;
+      height: 100%;
+      left: 0;
       position: absolute;
       top: 0;
-      right: 0;
-      transform: rotateY(-180deg) rotateZ(-90deg);
-      width: 2.5rem;
-
-      & circle {
-        stroke-dasharray: 113px;
-        stroke-dashoffset: 0px;
-        stroke-linecap: round;
-        stroke-width: 4px;
-        stroke: #777;
-        fill: none;
-        animation: countdown linear forwards;
-      }
-    }
-  }
-
-  @keyframes countdown {
-    from {
-      stroke-dashoffset: 0px;
-    }
-
-    to {
-      stroke-dashoffset: 113px;
+      width: 100%;
     }
   }
 </style>

@@ -136,4 +136,11 @@ export default {
       text-align: center;
     }
   }
+
+  .passage-rotation-countdown-timer {
+    background: #f7f7f7;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+  }
 </style>

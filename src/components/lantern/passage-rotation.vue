@@ -8,7 +8,8 @@
       <div class="message">{{ $t("components.lantern.passage-rotation.NO_PASSAGES_TEXT") }}</div>
     </div>
     <div v-if="currentPassageCollectionHasReferences" class="passage-text">
-      {{ currentPassageText }}
+      <span>{{ currentPassageText }}</span>
+      <span class="passage-reference">{{ currentPassageReferenceDisplayText }}</span>
     </div>
   </article>
 </template>
@@ -36,7 +37,7 @@ export default {
     this.stopRotation()
   },
   data: () => ({
-    rotationInterval: TIME.FIVE_SECONDS,
+    rotationInterval: TIME.ONE_MINUTE,
     rotationIntervalId: null
   }),
   computed: {
@@ -82,6 +83,13 @@ export default {
       }
 
       return ""
+    },
+    currentPassageReferenceDisplayText() {
+      if (this.currentPassageData && this.currentPassageData.referenceDisplayText) {
+        return this.currentPassageData.referenceDisplayText
+      }
+
+      return null
     },
     currentPassageError() {
       return isNotEmpty(this.currentPassage) ? this.currentPassage.error : null
@@ -144,7 +152,16 @@ export default {
   .passage-text {
     font-size: 2rem;
     line-height: 3rem;
-    padding: 2rem;
+    padding: 2rem 15rem;
+  }
+
+  .passage-reference {
+    color: var(--theme--color-text--light);
+    display: inline-block;
+    font-style: italic;
+    margin: 1rem 0;
+    text-align: right;
+    width: 100%;
   }
 
   .no-passages-to-show {

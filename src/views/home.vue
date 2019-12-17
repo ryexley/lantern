@@ -1,13 +1,18 @@
 <template>
   <fragment>
-    <h1>{{ $t("views.home.HEADING") }}</h1>
-    <h3>{{ $t("views.home.SUB-HEADING") }}</h3>
-    <loading-indicator
-      v-show="!passageCollectionsLoaded"
-      :labelKey="'views.home.COLLECTIONS_LOADING_TEXT'" />
-    <passage-collection-list
-      v-if="passageCollectionsLoaded"
-      :collections="passageCollectionsData" />
+    <header class="home-header">
+      <h1>{{ $t("views.home.HEADING") }}</h1>
+      <h3>{{ $t("views.home.SUB-HEADING") }}</h3>
+    </header>
+    <section class="home-passage-collection-list">
+      <loading-indicator
+        v-show="!passageCollectionsLoaded"
+        class="passage-collections-loading-indicator"
+        :labelKey="'views.home.COLLECTIONS_LOADING_TEXT'" />
+      <passage-collection-list
+        v-if="passageCollectionsLoaded"
+        :collections="passageCollectionsData" />
+      </section>
   </fragment>
 </template>
 
@@ -47,3 +52,13 @@ export default {
   }
 }
 </script>
+
+<style>
+  .home-header {
+    margin: 0 0 5rem 0;
+  }
+
+  .home-passage-collection-list {
+    margin: 2rem;
+  }
+</style>

@@ -15,6 +15,7 @@
 
 <script>
 import LoadingIndicator from "@/components/ui/loading-indicator"
+import { TIME } from "@/enums"
 import { isNotEmpty } from "@/util"
 
 // TODO: create a "Fit Text" component, like the one in this example:
@@ -31,6 +32,13 @@ export default {
       required: true
     }
   },
+  destroyed() {
+    this.stopRotation()
+  },
+  data: () => ({
+    rotationInterval: TIME.FIVE_SECONDS,
+    rotationIntervalId: null
+  }),
   computed: {
     showPassageLoading() {
       return (
@@ -83,19 +91,41 @@ export default {
         this.currentPassageCollectionLoaded &&
         !this.currentPassageCollectionHasReferences
       )
+    },
+    canStartRotation() {
+      return (
+        this.currentPassageCollectionLoaded &&
+        this.currentPassageCollectionHasReferences
+      )
+    },
+    canLoadCurrentPassage() {
+      return (
+        this.currentPassageCollectionHasReferences &&
+        !this.currentPassageLoaded
+      )
     }
   },
   methods: {
-    loadCurrentPassage() {
-      if (this.currentPassageCollectionHasReferences && !this.currentPassageLoaded) {
-        this.$store.dispatch("bible/fetchCurrentPassage")
+    async loadCurrentPassage() {
+      if (this.canLoadCurrentPassage) {
+        await this.$store.dispatch("bible/fetchCurrentPassage")
+      }
+    },
+    startRotation() {
+      this.rotationIntervalId = setInterval(() => {
+        this.$store.dispatch("bible/rotatePassage")
+      }, this.rotationInterval)
+    },
+    stopRotation() {
+      if (this.rotationIntervalId) {
+        clearInterval(this.rotationIntervalId)
       }
     }
   },
   watch: {
-    currentPassageCollection(newValue) {
-      if (newValue.loaded) {
-        this.loadCurrentPassage()
+    currentPassageCollectionLoaded(newValue) {
+      if (newValue === true) {
+        this.startRotation()
       }
     }
   }

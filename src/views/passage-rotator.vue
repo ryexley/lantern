@@ -2,6 +2,7 @@
   <section class="passage-rotator-container">
     <loading-indicator
       v-show="!currentPassageCollectionLoaded"
+      class="passage-rotator-collection-loading"
       :labelKey="'views.passage-rotator.COLLECTION_LOADING_TEXT'" />
     <header v-if="currentPassageCollectionLoaded" class="collection-header">
       <h1>{{ currentPassageCollectionData.name }}</h1>
@@ -77,6 +78,12 @@ export default {
     margin: 0;
     padding: 0;
     width: 100vw;
+  }
+
+  .passage-rotator-collection-loading {
+    margin: 1rem;
+    padding: 0 1rem;
+    width: 100%;
   }
 
   .collection-header {

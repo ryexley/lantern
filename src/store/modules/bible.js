@@ -68,16 +68,12 @@ export function BibleModule({ bibleServiceFactory }) {
         }
       },
 
-      initPassageRotation(state, passages) {
+      initPassageRotation(state, passageRotation) {
         const { data } = state
 
         state.data = {
           ...data,
-          passageRotation: {
-            currentIndex: 0,
-            passages,
-            currentPassage: passages[0]
-          }
+          passageRotation
         }
       },
 
@@ -96,6 +92,15 @@ export function BibleModule({ bibleServiceFactory }) {
             }
           }
         }
+      },
+
+      updatePassageRotation(state, passageRotation) {
+        const { data } = state
+
+        state.data = {
+          ...data,
+          passageRotation
+        }
       }
     },
     actions: {
@@ -110,22 +115,59 @@ export function BibleModule({ bibleServiceFactory }) {
         commit("setPassageCollections", collections)
       },
 
-      async fetchPassageCollection({ commit }, { slug }) {
+      async fetchPassageCollection({ state, commit }, { slug }) {
         const collection = await bibleService.getCollection(slug)
-        const { references } = collection
-        const passages = references.map(reference => ({
-          reference,
-          loaded: false,
-          data: {},
-          error: null
-        }))
-
         commit("setCurrentPassageCollection", collection)
-        commit("initPassageRotation", passages)
+
+        // init passage rotation...should probably move this to a
+        // standalone action, doing too much in here
+        const { references } = collection
+        const passages = references.map(reference => {
+          const { slug } = reference
+
+          return {
+            reference: slug,
+            loaded: false,
+            data: {},
+            error: null
+          }
+        })
+
+        const { passageRotation } = state.data
+        const { currentIndex } = passageRotation
+        let { currentPassage } = passageRotation
+
+        if (passages.length > 0) {
+          const currentPassageReference = passages[currentIndex].reference
+          const currentPassageData = await bibleService.getPassage(currentPassageReference)
+
+          currentPassage = {
+            reference: currentPassageReference,
+            loaded: true,
+            data: currentPassageData,
+            error: null
+          }
+
+          passages.splice(currentIndex, 1, currentPassage)
+        }
+
+        const initializedPassageRotation = {
+          currentIndex,
+          passages,
+          currentPassage
+        }
+
+        commit("initPassageRotation", initializedPassageRotation)
       },
 
       async clearCurrentPassageCollection({ commit }) {
         commit("clearCurrentPassageCollection")
+      },
+
+      async resetPassageRotation({ commit }) {
+        const { data: { passageRotation } } = getDefaultState()
+
+        commit("updatePassageRotation", passageRotation)
       },
 
       async fetchCurrentPassage({ state, commit }) {
@@ -142,6 +184,45 @@ export function BibleModule({ bibleServiceFactory }) {
         const passage = await bibleService.getPassage(reference)
 
         commit("setCurrentPassage", passage)
+      },
+
+      async rotatePassage({ state, commit }) {
+        const { data: { passageRotation: currentPassageRotation } } = state
+        const { currentIndex, passages } = currentPassageRotation
+
+        if (passages.length === 0) {
+          return
+        }
+
+        const onLastPassage = (currentIndex === (passages.length - 1))
+        const newCurrentPassageIndex = onLastPassage ? 0 : (currentIndex + 1)
+
+        let newCurrentPassage = passages[newCurrentPassageIndex]
+        let { loaded, reference } = newCurrentPassage
+
+        let passage = newCurrentPassage.data
+        if (!loaded) {
+          passage = await bibleService.getPassage(reference)
+          loaded = true
+        }
+
+        newCurrentPassage = {
+          reference,
+          loaded,
+          data: passage,
+          error: null
+        }
+
+        passages.splice(newCurrentPassageIndex, 1, newCurrentPassage)
+
+        const passageRotation = {
+          ...currentPassageRotation,
+          currentIndex: newCurrentPassageIndex,
+          passages,
+          currentPassage: newCurrentPassage
+        }
+
+        commit("updatePassageRotation", passageRotation)
       }
     }
   }

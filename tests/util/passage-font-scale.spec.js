@@ -6,7 +6,7 @@ import { isNotEmpty } from "@/util"
 
 describe("findPassageFontStyle", () => {
   it("does something", () => {
-    const result = findPassageFontStyle({ containerWidth: 1025, characterCount: 776 })
+    const result = findPassageFontStyle({ containerWidth: 850, characterCount: 776 })
 
     expect(true).toBe(true)
   })

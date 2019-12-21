@@ -133,16 +133,18 @@ export default {
     },
     calculatePassageTextSize() {
       this.$nextTick(() => {
-        const { clientWidth } = this.$refs.passageText
-        const characterCount = this.currentPassageText.length
+        if (this.$refs.passageText) {
+          const { clientWidth } = this.$refs.passageText
+          const characterCount = this.currentPassageText.length
 
-        const { fontSize, lineHeight } = findPassageFontStyle({
-          containerWidth: clientWidth,
-          characterCount
-        })
+          const { fontSize, lineHeight } = findPassageFontStyle({
+            containerWidth: clientWidth,
+            characterCount
+          })
 
-        this.passageFontSize = fontSize
-        this.passageLineHeight = lineHeight
+          this.passageFontSize = fontSize
+          this.passageLineHeight = lineHeight
+        }
       })
     },
     startRotation() {

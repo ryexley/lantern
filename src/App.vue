@@ -37,6 +37,8 @@ export default {
   body {
     color: var(--theme--color-text);
     font-family: var(--typography--base-font-family);
+    font-size: var(--typography--base-font-size);
+    line-height: var(--typography--line-height);
     margin: 0;
   }
 

@@ -4,3 +4,8 @@ export const TIME = {
   ONE_MINUTE: 60000,
   TWO_MINUTES: 120000
 }
+
+export const PASSAGE_ROTATION_DIRECTION = {
+  NEXT: "next",
+  PREVIOUS: "previous"
+}

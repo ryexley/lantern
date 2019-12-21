@@ -1,3 +1,5 @@
+import { PASSAGE_ROTATION_DIRECTION } from "@/enums"
+
 export function BibleModule({ bibleServiceFactory }) {
   let bibleService = null
   const initBibleService = env => { bibleService = bibleServiceFactory(env) }
@@ -184,6 +186,64 @@ export function BibleModule({ bibleServiceFactory }) {
         const passage = await bibleService.getPassage(reference)
 
         commit("setCurrentPassage", passage)
+      },
+
+      async movePassageIndex({ state, dispatch }, { direction }) {
+        const { data: { passageRotation: currentPassageRotation } } = state
+        const { currentIndex, passages } = currentPassageRotation
+
+        let newIndex = currentIndex
+        const onLastPassage = (currentIndex === (passages.length - 1))
+
+        if (passages.length === 0) {
+          return
+        }
+
+        if (direction === PASSAGE_ROTATION_DIRECTION.NEXT) {
+          newIndex = onLastPassage ? 0 : (currentIndex + 1)
+        } else {
+          newIndex = (currentIndex === 0) ? (passages.length - 1) : (currentIndex - 1)
+        }
+
+        dispatch("updateCurrentPassage", { index: newIndex })
+      },
+
+      async updateCurrentPassage({ state, dispatch }, { index }) {
+        const { data: { passageRotation: currentPassageRotation } } = state
+        const { passages } = currentPassageRotation
+
+        let newCurrentPassage = passages[index]
+        let { reference, loaded, data } = newCurrentPassage
+
+        if (!loaded) {
+          data = await bibleService.getPassage(reference)
+          loaded = true
+        }
+
+        newCurrentPassage = {
+          reference,
+          loaded,
+          data,
+          error: null
+        }
+
+        dispatch("updatePassageRotation", { index, passage: newCurrentPassage })
+      },
+
+      async updatePassageRotation({ state, commit }, { index, passage }) {
+        const { data: { passageRotation: currentPassageRotation } } = state
+        const { passages } = currentPassageRotation
+
+        passages.splice(index, 1, passage)
+
+        const updatedPassageRotation = {
+          ...currentPassageRotation,
+          currentIndex: index,
+          currentPassage: passage,
+          passages
+        }
+
+        commit("updatePassageRotation", updatedPassageRotation)
       },
 
       async rotatePassage({ state, commit }) {

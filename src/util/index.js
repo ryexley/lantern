@@ -14,19 +14,28 @@ export const isObjectLiteral = target => (Object.getPrototypeOf(target) === Obje
 
 export const isNotObjectLiteral = target => !isObjectLiteral(target)
 
-export const colorsValidator = (propValue, key, componentName, location, propFullName) => {
-  const color = propValue[0]
-  const duration = propValue[1]
+export function debounce(fn, wait, immediate) {
+  let timeout = null
 
-  if (!color.match(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/)) {
-    return new Error(
-      `Invalid prop '${propFullName}[0]' supplied to '${componentName}'.Expect a color with HEX color code.`
-    )
-  }
+  return function() {
+    const context = this
+    const args = arguments
 
-  if (!(duration === undefined || (duration >= 0 && duration <= 1))) {
-    return new Error(
-      `Invalid prop '${propFullName}[1]' supplied to '${componentName}'. Expect a number of color transition duration with value between 0 and 1.`
-    )
+    const later = () => {
+      timeout = null
+      if (!immediate) {
+        fn.apply(context, args)
+      }
+    }
+
+    const callNow = immediate && !timeout
+
+    clearTimeout(timeout)
+
+    timeout = setTimeout(later, wait)
+
+    if (callNow) {
+      fn.apply(context, args)
+    }
   }
 }

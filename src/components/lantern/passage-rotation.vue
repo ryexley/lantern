@@ -7,39 +7,45 @@
       <div class="sad-face">😞</div>
       <div class="message">{{ $t("components.lantern.passage-rotation.NO_PASSAGES_TEXT") }}</div>
     </div>
-    <div v-if="currentPassageCollectionHasReferences" class="passage-text">
-      <span>{{ currentPassageText }}</span>
-      <span class="passage-reference">{{ currentPassageReferenceDisplayText }}</span>
+    <div v-if="currentPassageCollectionHasReferences" class="passage-text" ref="passageText">
+      <span :style="passageTextStyle">{{ currentPassageText }}</span>
+      <span class="passage-reference" :style="passageTextStyle">{{ currentPassageReferenceDisplayText }}</span>
     </div>
   </article>
 </template>
 
 <script>
 import LoadingIndicator from "@/components/ui/loading-indicator"
-import { TIME } from "@/enums"
-import { isNotEmpty } from "@/util"
-
-// TODO: create a "Fit Text" component, like the one in this example:
-// https://codesandbox.io/s/vwjlp5pj5?from-embed
+import { TIME, PASSAGE_ROTATION_DIRECTION } from "@/enums"
+import { findPassageFontStyle } from "@/util/passage-font-scale"
+import { debounce, isNotEmpty } from "@/util"
 
 export default {
   name: "passage-rotation",
-  components: {
-    LoadingIndicator
-  },
+  components: { LoadingIndicator },
   props: {
     passageRotation: {
       type: Object,
       required: true
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener("resize", debounce(this.calculatePassageTextSize, 250))
+      document.body.addEventListener("click", this.onClick)
+    })
+  },
   destroyed() {
     this.stopRotation()
   },
-  data: () => ({
-    rotationInterval: TIME.ONE_MINUTE,
-    rotationIntervalId: null
-  }),
+  data() {
+    return {
+      rotationInterval: TIME.FIVE_SECONDS, // TIME.ONE_MINUTE,
+      rotationIntervalId: null,
+      passageFontSize: "2",
+      passageLineHeight: "150"
+    }
+  },
   computed: {
     showPassageLoading() {
       return (
@@ -111,6 +117,12 @@ export default {
         this.currentPassageCollectionHasReferences &&
         !this.currentPassageLoaded
       )
+    },
+    passageTextStyle() {
+      return {
+        fontSize: this.passageFontSize,
+        lineHeight: this.passageLineHeight
+      }
     }
   },
   methods: {
@@ -118,6 +130,20 @@ export default {
       if (this.canLoadCurrentPassage) {
         await this.$store.dispatch("bible/fetchCurrentPassage")
       }
+    },
+    calculatePassageTextSize() {
+      this.$nextTick(() => {
+        const { clientWidth } = this.$refs.passageText
+        const characterCount = this.currentPassageText.length
+
+        const { fontSize, lineHeight } = findPassageFontStyle({
+          containerWidth: clientWidth,
+          characterCount
+        })
+
+        this.passageFontSize = fontSize
+        this.passageLineHeight = lineHeight
+      })
     },
     startRotation() {
       this.rotationIntervalId = setInterval(() => {
@@ -128,12 +154,29 @@ export default {
       if (this.rotationIntervalId) {
         clearInterval(this.rotationIntervalId)
       }
+    },
+    rotatePassage(direction) {
+      this.$store.dispatch("bible/movePassageIndex", { direction })
+    },
+    onClick(e) {
+      const { clientWidth: viewportWidth } = document.body
+      const { clientX: clickedX } = e
+      const clickedOnRightSide = clickedX > (viewportWidth / 2)
+
+      const passageRotationDirection = clickedOnRightSide ? PASSAGE_ROTATION_DIRECTION.NEXT : PASSAGE_ROTATION_DIRECTION.PREVIOUS
+
+      this.rotatePassage(passageRotationDirection)
     }
   },
   watch: {
     currentPassageCollectionLoaded(newValue) {
       if (newValue === true) {
-        this.startRotation()
+        // this.startRotation()
+      }
+    },
+    currentPassageText(newValue) {
+      if (newValue.length > 0) {
+        this.calculatePassageTextSize()
       }
     }
   }
@@ -146,13 +189,24 @@ export default {
     display: flex;
     flex: auto;
     justify-content: center;
-    width: 100%;
   }
 
   .passage-text {
-    font-size: 2rem;
-    line-height: 3rem;
-    padding: 2rem 15rem;
+    display: flex;
+    flex: auto;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    padding: 2rem 5rem;
+
+    & span {
+      font-size: 1.5rem;
+      line-height: 150%;
+    }
+
+    @media all and (max-width: 40rem) {
+      padding: 2rem;
+    }
   }
 
   .passage-reference {

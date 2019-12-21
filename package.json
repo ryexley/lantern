@@ -6,7 +6,9 @@
     "serve": "vue-cli-service serve --port 7200",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "lint:fix": "yarn run lint --fix"
+    "lint:fix": "yarn run lint --fix",
+    "test": "jest",
+    "coverage:view": "open ./coverage/lcov-report/index.html"
   },
   "dependencies": {
     "axios": "^0.19.0",
@@ -21,17 +23,28 @@
     "vuex-persistedstate": "^2.7.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@testing-library/vue": "^4.1.0",
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-eslint": "^4.1.0",
+    "@vue/cli-plugin-unit-jest": "^4.1.1",
     "@vue/cli-service": "^4.1.0",
     "autoprefixer": "^9.7.3",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.3",
+    "babel-jest": "^24.9.0",
     "dotenv": "^8.2.0",
     "eslint": "^5.16.0",
+    "eslint-plugin-jest": "^23.1.1",
     "eslint-plugin-vue": "^5.0.0",
+    "jest": "^24.9.0",
+    "jest-extended": "^0.11.2",
+    "jest-transform-stub": "^2.0.0",
     "postcss-mixins": "^6.2.3",
     "postcss-nesting": "^7.0.1",
     "postcss-simple-vars": "^5.0.2",
+    "vue-jest": "^3.0.5",
     "vue-template-compiler": "^2.6.10"
   },
   "browserslist": [

@@ -71,9 +71,13 @@ export default {
 <style>
   .passage-rotator-container {
     align-items: center;
+    animation: gradient-background 200s ease infinite;
+    background: linear-gradient(-67.5deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400%;
+    color: var(--theme--color-text--light);
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
     justify-content: flex-start;
     margin: 0;
     padding: 0;
@@ -87,8 +91,13 @@ export default {
   }
 
   .collection-header {
+    background: rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(4px);
     padding: 1rem;
+    position: sticky;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
     text-transform: capitalize;
+    top: 0;
     width: 100%;
 
     & h1 {
@@ -97,6 +106,20 @@ export default {
 
     & p {
       margin: 0;
+    }
+  }
+
+  @keyframes gradient-background {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
     }
   }
 </style>

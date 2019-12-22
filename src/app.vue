@@ -59,7 +59,7 @@ export default {
     align-items: center;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
     justify-content: center;
     margin: 0;
     padding: 0;

@@ -40,7 +40,7 @@ export default {
   },
   data() {
     return {
-      rotationInterval: TIME.FIVE_SECONDS, // TIME.ONE_MINUTE,
+      rotationInterval: TIME.ONE_MINUTE,
       rotationIntervalId: null,
       passageFontSize: "2",
       passageLineHeight: "150"
@@ -173,7 +173,7 @@ export default {
   watch: {
     currentPassageCollectionLoaded(newValue) {
       if (newValue === true) {
-        // this.startRotation()
+        this.startRotation()
       }
     },
     currentPassageText(newValue) {
@@ -194,12 +194,14 @@ export default {
   }
 
   .passage-text {
+    color: var(--theme--color-text--light);
     display: flex;
     flex: auto;
     flex-direction: column;
     height: 100%;
     justify-content: center;
     padding: 2rem 5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 
     & span {
       font-size: 1.5rem;

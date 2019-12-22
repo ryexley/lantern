@@ -7,10 +7,12 @@
       <div class="sad-face">😞</div>
       <div class="message">{{ $t("components.lantern.passage-rotation.NO_PASSAGES_TEXT") }}</div>
     </div>
-    <div v-if="currentPassageCollectionHasReferences" class="passage-text" ref="passageText">
-      <span :style="passageTextStyle">{{ currentPassageText }}</span>
-      <span class="passage-reference" :style="passageTextStyle">{{ currentPassageReferenceDisplayText }}</span>
-    </div>
+    <transition name="fade-slide" mode="in-out">
+      <div v-if="currentPassageCollectionHasReferences" class="passage-text" ref="passageText">
+          <span :style="passageTextStyle" :key="currentPassage.reference">{{ currentPassageText }}</span>
+          <span class="passage-reference" :style="passageTextStyle">{{ currentPassageReferenceDisplayText }}</span>
+      </div>
+    </transition>
   </article>
 </template>
 
@@ -247,5 +249,15 @@ export default {
     position: absolute;
     right: 1rem;
     top: 1rem;
+  }
+
+  .fade-slide-enter-active,
+  .fade-slide-leave-active {
+    transition: opacity 2s ease-in-out;
+  }
+
+  .fade-slide-enter,
+  .fade-slide-leave-to {
+    opacity: 0;
   }
 </style>

@@ -73,7 +73,7 @@ export default {
     align-items: center;
     animation: gradient-background 200s ease infinite;
     background: linear-gradient(-67.5deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-    background-size: 400%;
+    background-size: 1000%;
     color: var(--theme--color-text--light);
     display: flex;
     flex-direction: column;
